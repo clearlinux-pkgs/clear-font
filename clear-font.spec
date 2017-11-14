@@ -4,7 +4,7 @@
 #
 Name     : clear-font
 Version  : 1
-Release  : 10
+Release  : 11
 URL      : http://localhost/cgit/projects/clear-font/snapshot/clear-font-1.tar.bz2
 Source0  : http://localhost/cgit/projects/clear-font/snapshot/clear-font-1.tar.bz2
 Summary  : No detailed summary available
