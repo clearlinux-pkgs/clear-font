@@ -1,0 +1,4 @@
+1
+mkfontdir-bin
+mkfontscale-bin
+pkgconfig(xorg-macros)

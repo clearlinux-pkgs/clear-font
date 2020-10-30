@@ -4,13 +4,14 @@
 #
 Name     : clear-font
 Version  : 1
-Release  : 14
+Release  : 15
 URL      : http://localhost/cgit/projects/clear-font/snapshot/clear-font-1.tar.bz2
 Source0  : http://localhost/cgit/projects/clear-font/snapshot/clear-font-1.tar.bz2
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Apache-2.0
-Requires: clear-font-data
+Requires: clear-font-data = %{version}-%{release}
+Requires: clear-font-license = %{version}-%{release}
 BuildRequires : font-util-dev
 BuildRequires : mkfontdir-bin
 BuildRequires : mkfontscale-bin
@@ -28,28 +29,47 @@ Group: Data
 data components for the clear-font package.
 
 
+%package license
+Summary: license components for the clear-font package.
+Group: Default
+
+%description license
+license components for the clear-font package.
+
+
 %prep
 %setup -q -n clear-font-1
+cd %{_builddir}/clear-font-1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1510692269
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604084340
+export GCC_IGNORE_WERROR=1
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %reconfigure --disable-static
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1510692269
+export SOURCE_DATE_EPOCH=1604084340
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/clear-font
+cp %{_builddir}/clear-font-1/LICENSE-2.0.txt %{buildroot}/usr/share/package-licenses/clear-font/2b8b815229aa8a61e483fb4ba0588b8b6c491890
 %make_install
 
 %files
@@ -69,3 +89,7 @@ rm -rf %{buildroot}
 /usr/share/fonts/X11/TTF/ClearSans-Thin.ttf
 /usr/share/fonts/X11/TTF/fonts.dir
 /usr/share/fonts/X11/TTF/fonts.scale
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/clear-font/2b8b815229aa8a61e483fb4ba0588b8b6c491890
